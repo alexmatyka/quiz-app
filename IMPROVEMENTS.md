@@ -21,3 +21,6 @@
 
 ## Data & Features
 - Support for quiz versioning / history (track changes for each quiz).
+
+## Monitoring
+- Add sentry/datadog support
