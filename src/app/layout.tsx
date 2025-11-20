@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Create your quiz",
+    description: "Build and share quizzes with Quiz App",
+    images: [
+      "https://www.creativefabrica.com/wp-content/uploads/2020/09/02/Auto-car-logo-design-Graphics-5237528-1.jpg",
+    ],
+  },
 };
 
 export default function RootLayout({
