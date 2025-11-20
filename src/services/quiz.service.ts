@@ -83,7 +83,7 @@ export const seedInitialData = () => {
   const now = new Date().toISOString();
   const seedQuizzes: Quiz[] = [
     {
-      id: "a1b2c3d4",
+      id: crypto.randomUUID(),
       title: "Sample Science Quiz",
       blocks: [
         {
@@ -106,7 +106,7 @@ export const seedInitialData = () => {
       updatedAt: now,
     },
     {
-      id: "e5f6g7h8",
+      id: crypto.randomUUID(),
       title: "My Draft Quiz",
       blocks: [],
       published: false,
@@ -114,7 +114,7 @@ export const seedInitialData = () => {
       updatedAt: now,
     },
     {
-      id: "i9j0k1l2",
+      id: crypto.randomUUID(),
       title: "Frontend Technologies",
       blocks: [
         {

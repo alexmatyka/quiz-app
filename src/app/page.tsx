@@ -1,7 +1,10 @@
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      HELLO WORLD
-    </div>
-  );
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "All Quizzes",
+  description: "View all available quizzes.",
+};
+
+export default function HomePage() {
+  return <div>{/* Quiz list will be rendered here */}</div>;
 }
