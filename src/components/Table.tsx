@@ -26,7 +26,10 @@ export function Table<T extends { id: string }>({ data, columns }: Props<T>) {
       <TableHeader>
         <TableRow>
           {columns.map((col) => (
-            <TableHead key={String(col.key)} className={col.className}>
+            <TableHead
+              key={String(col.key)}
+              className={cn("py-6", col.className)}
+            >
               {col.label}
             </TableHead>
           ))}
@@ -39,7 +42,7 @@ export function Table<T extends { id: string }>({ data, columns }: Props<T>) {
             {columns.map((col) => (
               <TableCell
                 key={String(col.key)}
-                className={cn("py-5", col.className)}
+                className={cn("py-6", col.className)}
               >
                 {col.render
                   ? col.render(row)
