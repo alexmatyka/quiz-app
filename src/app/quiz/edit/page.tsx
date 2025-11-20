@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function CreateQuizPage() {
-  return <div>{/* CreateQuizPage */}</div>;
+  return <div>CreateQuizPage</div>;
 }
