@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { useQuizStore } from "@/stores/quiz.store";
+import { useQuizStore } from "@/stores/quizzes.store";
 import { QuizTable } from "./QuizTable";
 
 // For the production version, make this component a server component

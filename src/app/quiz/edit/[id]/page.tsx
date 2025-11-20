@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ViewQuizHeader } from "@/app/quiz/[id]/_components/ViewQuizHeader";
+import { QuizBuilderEdit } from "@/app/quiz/edit/_components/QuizBuilderEdit";
 
 type Props = {
   params: { id: string };
@@ -11,11 +13,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function EditQuizPage({ params }: Props) {
+export default async function EditQuizPage({ params }: Props) {
+  const { id } = await params;
+
   return (
-    <div>
-      <h1>Editing Quiz: {params.id}</h1>
-      {/* EditQuizPage */}
+    <div className="page-container">
+      <ViewQuizHeader />
+      <main>
+        <QuizBuilderEdit quizId={id} />
+      </main>
     </div>
   );
 }
