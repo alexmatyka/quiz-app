@@ -1,9 +1,4 @@
-import {
-  BlockType,
-  QuestionType,
-  type Quiz,
-  type QuizBlock,
-} from "@/lib/types/quiz";
+import { BlockType, QuestionType, type Quiz } from "@/lib/types/quiz";
 import { getFromStorage, setToStorage } from "@/lib/utils/local-storage";
 
 const INDEX_KEY = "quizbuilder.index";
@@ -27,10 +22,12 @@ export const getQuizById = (id: string): Quiz | undefined => {
   return getFromStorage<Quiz | undefined>(getQuizKey(id), undefined);
 };
 
-export const saveQuiz = (
-  quizData: Partial<Quiz> & { title: string; blocks: QuizBlock[] },
-): Quiz | null => {
+export const saveQuiz = (quizData: Partial<Quiz>): Quiz | null => {
   if (typeof window === "undefined") return null;
+
+  if (!quizData.title || !quizData.blocks) {
+    throw new Error("title and blocks are required fields");
+  }
 
   const now = new Date().toISOString();
 
@@ -44,13 +41,13 @@ export const saveQuiz = (
     return updatedQuiz;
   } else {
     // Create new quiz
-    const newQuiz: Quiz = {
+    const newQuiz = {
       id: crypto.randomUUID(),
       published: false,
       ...quizData,
       createdAt: now,
       updatedAt: now,
-    };
+    } as Quiz;
 
     setToStorage(getQuizKey(newQuiz.id), newQuiz);
 
@@ -68,6 +65,20 @@ export const publishQuiz = (id: string): Quiz | null => {
   const publishedQuiz: Quiz = {
     ...quizToPublish,
     published: true,
+    updatedAt: new Date().toISOString(),
+  };
+
+  setToStorage(getQuizKey(id), publishedQuiz);
+  return publishedQuiz;
+};
+
+export const unpublishQuiz = (id: string): Quiz | null => {
+  const quizToPublish = getQuizById(id);
+  if (!quizToPublish) return null;
+
+  const publishedQuiz: Quiz = {
+    ...quizToPublish,
+    published: false,
     updatedAt: new Date().toISOString(),
   };
 

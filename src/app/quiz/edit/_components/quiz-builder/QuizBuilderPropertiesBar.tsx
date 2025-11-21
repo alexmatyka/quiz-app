@@ -1,3 +1,3 @@
 export const QuizBuilderPropertiesBar = () => {
-  return <div>QuizBuilderPropertiesBar</div>;
+  return <div className="w-full">QuizBuilderPropertiesBar</div>;
 };
