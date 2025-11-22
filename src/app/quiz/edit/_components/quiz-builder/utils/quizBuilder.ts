@@ -1,3 +1,4 @@
+import type { CanvasBlocks } from "@/app/quiz/edit/_components/quiz-builder/context/QuizBuilderContext";
 import { BlockType, QuestionType, type QuizBlock } from "@/lib/types/quiz";
 
 export const createBlock = (type: BlockType): QuizBlock => {
@@ -11,7 +12,7 @@ export const createBlock = (type: BlockType): QuizBlock => {
         id,
         type,
         content: {
-          text: "",
+          text: `Your Question ${id.slice(0, 3)}`,
           questionType: QuestionType.Single,
           options: [""],
         },
@@ -25,14 +26,27 @@ export const createBlock = (type: BlockType): QuizBlock => {
   }
 };
 
-const UNIQUE_BLOCKS: BlockType[] = [
+const UNIQUE_BLOCKS = [
   BlockType.Heading,
   BlockType.Footer,
   BlockType.Button,
-];
+] as const;
 
-export const checkIfDisabled = (type: BlockType, canvasBlocks: QuizBlock[]) => {
-  if (!UNIQUE_BLOCKS.includes(type)) return false;
+type UniqueBlockType = (typeof UNIQUE_BLOCKS)[number];
 
-  return canvasBlocks.some((b) => b.type === type);
+export const checkIfDisabled = (
+  type: BlockType,
+  canvas: CanvasBlocks,
+): boolean => {
+  if (!UNIQUE_BLOCKS.includes(type as UniqueBlockType)) {
+    return false;
+  }
+
+  const status: Record<UniqueBlockType, boolean> = {
+    [BlockType.Heading]: !!canvas.header,
+    [BlockType.Footer]: !!canvas.footer,
+    [BlockType.Button]: !!canvas.button,
+  };
+
+  return status[type as UniqueBlockType];
 };

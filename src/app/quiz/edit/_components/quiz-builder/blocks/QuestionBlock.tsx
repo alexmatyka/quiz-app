@@ -5,5 +5,7 @@ type QuestionBlockProps = {
 };
 
 export const QuestionBlockRenderer = ({ block }: QuestionBlockProps) => {
-  return <div>{block.content.text}</div>;
+  return (
+    <div className="p-5 border-1 border-gray-300">{block.content.text}</div>
+  );
 };
