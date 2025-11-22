@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { QuizNotPublished } from "@/app/quiz/[id]/_components/QuizNotPublished";
 import { Spinner } from "@/components/ui/spinner";
 import type { Quiz } from "@/lib/types/quiz";
@@ -7,7 +7,7 @@ import type { Quiz } from "@/lib/types/quiz";
 type QuizStatusWrapperProps = {
   quiz: Quiz | null;
   isLoading: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const QuizStatusWrapper = ({

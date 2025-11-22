@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import { BlockType, QuestionType, type Quiz } from "@/lib/types/quiz";
+import { createTimestamp } from "@/lib/utils/date";
 import { getFromStorage, setToStorage } from "@/lib/utils/local-storage";
 
 const INDEX_KEY = "quizbuilder.index";
@@ -22,14 +24,29 @@ export const getQuizById = (id: string): Quiz | undefined => {
   return getFromStorage<Quiz | undefined>(getQuizKey(id), undefined);
 };
 
+export const removeQuiz = (id: string): void => {
+  if (typeof window === "undefined") return;
+
+  localStorage.removeItem(getQuizKey(id));
+
+  const quizIds = getFromStorage<string[]>(INDEX_KEY, []);
+
+  const newQuizIds = quizIds.filter((quizId) => quizId !== id);
+
+  localStorage.setItem(INDEX_KEY, JSON.stringify(newQuizIds));
+
+  toast.success("Quiz removed");
+};
+
 export const saveQuiz = (quizData: Partial<Quiz>): Quiz | null => {
   if (typeof window === "undefined") return null;
 
   if (!quizData.title || !quizData.blocks) {
-    throw new Error("title and blocks are required fields");
+    toast.error("title and droppable-area-blocks are required fields");
+    throw new Error("title and droppable-area-blocks are required fields");
   }
 
-  const now = new Date().toISOString();
+  const now = createTimestamp();
 
   if (quizData.id) {
     // Update existing quiz
@@ -42,47 +59,59 @@ export const saveQuiz = (quizData: Partial<Quiz>): Quiz | null => {
   } else {
     // Create new quiz
     const newQuiz = {
+      blocks: quizData.blocks || [],
       id: crypto.randomUUID(),
       published: false,
-      ...quizData,
+      title: quizData.title || "",
       createdAt: now,
       updatedAt: now,
-    } as Quiz;
+    };
 
     setToStorage(getQuizKey(newQuiz.id), newQuiz);
 
-    const quizIds = getFromStorage<string[]>(INDEX_KEY, []);
+    const quizIds = getFromStorage(INDEX_KEY, []);
     setToStorage(INDEX_KEY, [...quizIds, newQuiz.id]);
 
+    toast.success("Quiz updated");
     return newQuiz;
   }
 };
 
 export const publishQuiz = (id: string): Quiz | null => {
   const quizToPublish = getQuizById(id);
-  if (!quizToPublish) return null;
+  if (!quizToPublish) {
+    toast.error("Pls provide quiz for publish");
+    return null;
+  }
 
   const publishedQuiz: Quiz = {
     ...quizToPublish,
     published: true,
-    updatedAt: new Date().toISOString(),
+    updatedAt: createTimestamp(),
   };
 
   setToStorage(getQuizKey(id), publishedQuiz);
+
+  toast.success("Quiz published");
   return publishedQuiz;
 };
 
 export const unpublishQuiz = (id: string): Quiz | null => {
-  const quizToPublish = getQuizById(id);
-  if (!quizToPublish) return null;
+  const quizToUnPublish = getQuizById(id);
+  if (!quizToUnPublish) {
+    toast.error("Pls provide quiz for unpublish");
+    return null;
+  }
 
   const publishedQuiz: Quiz = {
-    ...quizToPublish,
+    ...quizToUnPublish,
     published: false,
-    updatedAt: new Date().toISOString(),
+    updatedAt: createTimestamp(),
   };
 
   setToStorage(getQuizKey(id), publishedQuiz);
+
+  toast.success("Quiz unpublished");
   return publishedQuiz;
 };
 
@@ -91,7 +120,7 @@ export const seedInitialData = () => {
     return;
   }
 
-  const now = new Date().toISOString();
+  const now = createTimestamp();
   const seedQuizzes: Quiz[] = [
     {
       id: crypto.randomUUID(),
@@ -100,15 +129,18 @@ export const seedInitialData = () => {
         {
           id: crypto.randomUUID(),
           type: BlockType.Heading,
-          content: { text: "A Quick Quiz on Planets" },
+          content: { text: "A Quick Quiz on Planets", variant: "h1" },
         },
         {
           id: crypto.randomUUID(),
           type: BlockType.Question,
           content: {
-            questionText: "Which planet is known as the Red Planet?",
+            text: "Which planet is known as the Red Planet?",
             questionType: QuestionType.Single,
-            options: ["Earth", "Mars", "Jupiter", "Venus"],
+            options: [
+              { id: "Earth", value: "Earth" },
+              { id: "Mars", value: "Mars" },
+            ],
           },
         },
       ],
@@ -131,13 +163,13 @@ export const seedInitialData = () => {
         {
           id: crypto.randomUUID(),
           type: BlockType.Heading,
-          content: { text: "Test Your Frontend Knowledge" },
+          content: { text: "Test Your Frontend Knowledge", variant: "h2" },
         },
         {
           id: crypto.randomUUID(),
           type: BlockType.Question,
           content: {
-            questionText: "What does CSS stand for?",
+            text: "What does CSS stand for?",
             questionType: QuestionType.Text,
           },
         },
@@ -145,18 +177,28 @@ export const seedInitialData = () => {
           id: crypto.randomUUID(),
           type: BlockType.Question,
           content: {
-            questionText: "Which of these are JavaScript frameworks?",
+            text: "Which of these are JavaScript frameworks?",
             questionType: QuestionType.Multi,
-            options: ["React", "Angular", "Django", "Vue"],
+            options: [
+              { id: "React", value: "React" },
+              { id: "Vue", value: "Vue" },
+              { id: "Angular", value: "Angular" },
+              { id: "Svelte", value: "Svelte" },
+            ],
           },
         },
         {
           id: crypto.randomUUID(),
           type: BlockType.Question,
           content: {
-            questionText: "Is JSX required to use React?",
+            text: "Is JSX required to use React?",
             questionType: QuestionType.Single,
-            options: ["Yes", "No"],
+            options: [
+              { id: "Yes", value: "Yes" },
+              { id: "No", value: "No" },
+              { id: "122323dsd", value: "No JSX in React!" },
+              { id: "122323ddsd", value: "I am Jquery developer!" },
+            ],
           },
         },
       ],

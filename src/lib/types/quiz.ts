@@ -16,20 +16,24 @@ export type BaseBlock = {
   type: BlockType;
 };
 
+export type HeadingBlockVariants = "h1" | "h2" | "h3";
+
 export type HeadingBlock = BaseBlock & {
   type: BlockType.Heading;
   content: {
     text: string;
-    variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+    variant: HeadingBlockVariants;
   };
 };
+
+export type QuestionOption = { id: string; value: string };
 
 export type QuestionBlock = BaseBlock & {
   type: BlockType.Question;
   content: {
     text: string;
     questionType: QuestionType;
-    options?: string[];
+    options?: QuestionOption[];
   };
 };
 

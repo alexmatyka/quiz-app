@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ViewQuizHeader } from "@/app/quiz/[id]/_components/ViewQuizHeader";
-import { QuizBuilder } from "@/app/quiz/edit/_components/quiz-builder/QuizBuilder";
+import { QuizBuilderCreate } from "@/features/quiz-builder/wrappers/QuizBuilderCreate";
 
 export const metadata: Metadata = {
   title: "Create New Quiz",
@@ -12,7 +12,7 @@ export default function CreateQuizPage() {
     <div className="page-container">
       <ViewQuizHeader />
       <main>
-        <QuizBuilder />
+        <QuizBuilderCreate />
       </main>
     </div>
   );

@@ -5,26 +5,32 @@ import { getQuizzes } from "@/services/quiz.service";
 
 interface QuizzesStore {
   quizzes: Quiz[];
-  currentQuizId: string | null;
   isLoading: boolean;
-
   addQuiz: (quiz: Quiz) => void;
   fetchQuizzes: () => void;
+  updateRefetchTrigger: () => void;
+  refetchTrigger: number;
 }
 
-export const useQuizStore = create<QuizzesStore>()(
+export const useQuizzesStore = create<QuizzesStore>()(
   devtools((set) => ({
     quizzes: [],
-    currentQuizId: null,
     isLoading: true,
+    refetchTrigger: 0,
 
+    updateRefetchTrigger: () => {
+      set((state) => ({
+        refetchTrigger: state.refetchTrigger + 1,
+      }));
+    },
     fetchQuizzes: () => {
       try {
         const quizzes = getQuizzes();
         set({ quizzes, isLoading: false });
-      } catch (e) {
-        console.error("Failed to load quizzes", e);
-        set({ quizzes: [], isLoading: false });
+      } catch {
+        set({ quizzes: [] });
+      } finally {
+        set({ isLoading: false });
       }
     },
   })),

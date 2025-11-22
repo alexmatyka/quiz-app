@@ -2,20 +2,22 @@
 
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { useQuizStore } from "@/stores/quizzes.store";
+import { useQuizzesStore } from "@/stores/quizzes.store";
 import { QuizTable } from "./QuizTable";
 
 // For the production version, make this component a server component
 // and fetch quizzes via a server request from the parent through context + zustand.
 // For the purposes of this test assignment, we are tied to a service that works with localStorage, so the component is client-side.
 export const HomePageContent = () => {
-  const quizzes = useQuizStore((s) => s.quizzes);
-  const isLoading = useQuizStore((s) => s.isLoading);
-  const fetchQuizzes = useQuizStore((s) => s.fetchQuizzes);
+  const quizzes = useQuizzesStore((store) => store.quizzes);
+  const isLoading = useQuizzesStore((store) => store.isLoading);
+  const fetchQuizzes = useQuizzesStore((store) => store.fetchQuizzes);
+  const refetchTrigger = useQuizzesStore((s) => s.refetchTrigger);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we re-fetch when remove quiz, so we use refetchTrigger
   useEffect(() => {
     fetchQuizzes();
-  }, [fetchQuizzes]);
+  }, [fetchQuizzes, refetchTrigger]);
 
   if (isLoading) {
     return (
@@ -36,7 +38,7 @@ export const HomePageContent = () => {
 
   return (
     <div>
-      <h1 className="text-ds-black text-4xl font-semibold mb-4">Quiz List</h1>
+      <h1 className="text-ds-black text-2xl font-semibold mb-4">Quiz List</h1>
       <QuizTable quizzes={quizzes} />
     </div>
   );

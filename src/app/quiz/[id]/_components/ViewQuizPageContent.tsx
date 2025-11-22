@@ -11,7 +11,7 @@ type ViewQuizPageContentProps = {
 // Server-side render all non-interactive parts, but since this is a localStorage-based test task,
 // we sync the interactive state with Zustand on the client and show not found page on the client as well
 export const ViewQuizPageContent = ({ quizId }: ViewQuizPageContentProps) => {
-  const activeQuiz = useQuizStore((s) => s.activeQuiz);
+  const originalQuiz = useQuizStore((s) => s.originalQuiz);
   const fetchQuiz = useQuizStore((s) => s.fetchQuiz);
   const isLoading = useQuizStore((s) => s.isLoading);
 
@@ -20,8 +20,8 @@ export const ViewQuizPageContent = ({ quizId }: ViewQuizPageContentProps) => {
   }, [quizId, fetchQuiz]);
 
   return (
-    <QuizStatusWrapper quiz={activeQuiz} isLoading={isLoading}>
-      {activeQuiz?.title}
+    <QuizStatusWrapper quiz={originalQuiz} isLoading={isLoading}>
+      CONTEXT
     </QuizStatusWrapper>
   );
 };

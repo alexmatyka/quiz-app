@@ -4,32 +4,40 @@ import type { Quiz } from "@/lib/types/quiz";
 import { getQuizById } from "@/services/quiz.service";
 
 interface QuizStore {
-  activeQuiz: Quiz | null; // The saved quiz (source of truth)
-  draftQuiz: Partial<Quiz> | null; // Editable copy for making changes, can reset to activeQuiz if needed
+  // The saved quiz (source of truth)
+  originalQuiz: Quiz | null;
+  // Editable copy for making changes, can reset to activeQuiz if needed
+  draftQuiz: Partial<Quiz> | null;
   isLoading: boolean;
   refetchTrigger: number;
-
   fetchQuiz: (quizId: string) => void;
   updateDraftQuiz: (quiz: Partial<Quiz>) => void;
-  updateLoading: (isLoading: boolean) => void;
   updateRefetchTrigger: () => void;
+  resetQuizStore: () => void;
 }
+
+const INITIAL_QUIZ_DATA = { title: "", blocks: [] };
 
 export const useQuizStore = create<QuizStore>()(
   devtools((set) => ({
-    activeQuiz: null,
-    currentQuizId: null,
+    originalQuiz: INITIAL_QUIZ_DATA,
+    draftQuiz: INITIAL_QUIZ_DATA,
     isLoading: true,
     refetchTrigger: 0,
+
+    resetQuizStore: () => {
+      set({
+        originalQuiz: null,
+        draftQuiz: null,
+        isLoading: false,
+        refetchTrigger: 0,
+      });
+    },
 
     updateRefetchTrigger: () => {
       set((state) => ({
         refetchTrigger: state.refetchTrigger + 1,
       }));
-    },
-
-    updateLoading: (isLoading: boolean) => {
-      set({ isLoading });
     },
 
     updateDraftQuiz: (quiz: Partial<Quiz>) => {
@@ -44,11 +52,12 @@ export const useQuizStore = create<QuizStore>()(
       set({ isLoading: true });
 
       try {
-        const activeQuiz = getQuizById(quizId);
-        set({ activeQuiz, draftQuiz: { ...activeQuiz } });
-      } catch (e) {
-        console.error("Failed to load quiz", e);
-        set({ activeQuiz: null, draftQuiz: null });
+        // This is supposed to be an SSR request, but since we use localStorage, we handle it on the client side in a Zustand action
+        const originalQuiz = getQuizById(quizId);
+
+        set({ originalQuiz, draftQuiz: { ...originalQuiz } });
+      } catch {
+        set({ originalQuiz: null, draftQuiz: null });
       } finally {
         set({ isLoading: false });
       }

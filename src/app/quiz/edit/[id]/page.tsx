@@ -1,18 +1,23 @@
+"use server";
+
 import type { Metadata } from "next";
 import { ViewQuizHeader } from "@/app/quiz/[id]/_components/ViewQuizHeader";
-import { QuizBuilderEdit } from "@/app/quiz/edit/_components/QuizBuilderEdit";
+import { QuizBuilderEdit } from "@/features/quiz-builder/wrappers/QuizBuilderEdit";
 
 type Props = {
   params: { id: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
   return {
-    title: `Edit Quiz ${params.id}`,
-    description: `Editing quiz with ID ${params.id}.`,
+    title: `Edit Quiz ${id}`,
+    description: `Editing quiz with ID ${id}.`,
   };
 }
 
+// We should place ssr request for quiz in real app here
 export default async function EditQuizPage({ params }: Props) {
   const { id } = await params;
 

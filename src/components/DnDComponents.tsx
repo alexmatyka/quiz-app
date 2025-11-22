@@ -1,6 +1,7 @@
+import { RestrictToElement } from "@dnd-kit/dom/modifiers";
 import { useDraggable, useDroppable } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 import { cn } from "@/lib/utils";
 
 type DndBaseProps = {
@@ -29,9 +30,9 @@ export function Droppable({
       })}
     >
       {isDropTarget ? (
-        <p className="text-blue-500 text-center">Release to drop</p>
+        <p className="text-blue-700 text-center">Release to drop</p>
       ) : (
-        <p className="text-gray-400 text-center">Drag blocks here</p>
+        <p className="text-gray-700 text-center">Drag blocks here</p>
       )}
       {children}
     </div>
@@ -62,10 +63,16 @@ type SortableProps = {
   id: string;
   index: number;
   children: ReactNode;
+  containerRef: RefObject<HTMLDivElement | null>;
 };
 
-export function Sortable({ id, index, children }: SortableProps) {
-  const { ref } = useSortable({ id, index });
+export function Sortable({ id, index, children, containerRef }: SortableProps) {
+  const { ref } = useSortable({
+    id,
+    index,
+    // Restrict sortable to container
+    modifiers: [RestrictToElement.configure({ element: containerRef.current })],
+  });
 
   return <div ref={ref}>{children}</div>;
 }
