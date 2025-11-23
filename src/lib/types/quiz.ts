@@ -65,3 +65,22 @@ export type Quiz = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type QuestionUserAnswer =
+  | QuestionSingleAnswer
+  | QuestionMultiAnswer
+  | QuestionTextAnswer;
+export type QuestionSingleAnswer = {
+  type: QuestionType.Single;
+  value: string;
+};
+
+export type QuestionMultiAnswer = {
+  type: QuestionType.Multi;
+  value: string[];
+};
+
+export type QuestionTextAnswer = {
+  type: QuestionType.Text;
+  value: string;
+};

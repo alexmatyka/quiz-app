@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { Quiz } from "@/lib/types/quiz";
+import type { QuestionUserAnswer, Quiz } from "@/lib/types/quiz";
 import { getQuizById } from "@/services/quiz.service";
 
 interface QuizStore {
@@ -14,6 +14,8 @@ interface QuizStore {
   updateDraftQuiz: (quiz: Partial<Quiz>) => void;
   updateRefetchTrigger: () => void;
   resetQuizStore: () => void;
+  userAnswers: Record<string, QuestionUserAnswer>;
+  setAnswer: (questionId: string, answer: QuestionUserAnswer) => void;
 }
 
 const INITIAL_QUIZ_DATA = { title: "", blocks: [] };
@@ -24,6 +26,7 @@ export const useQuizStore = create<QuizStore>()(
     draftQuiz: INITIAL_QUIZ_DATA,
     isLoading: true,
     refetchTrigger: 0,
+    userAnswers: {},
 
     resetQuizStore: () => {
       set({
@@ -61,6 +64,12 @@ export const useQuizStore = create<QuizStore>()(
       } finally {
         set({ isLoading: false });
       }
+    },
+
+    setAnswer: (questionId, answer) => {
+      set((state) => ({
+        userAnswers: { ...state.userAnswers, [questionId]: answer },
+      }));
     },
   })),
 );

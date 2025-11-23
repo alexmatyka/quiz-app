@@ -16,6 +16,7 @@ export const QuestionBlockItem = ({
         {questionNumber}. {question.content.text}
       </h2>
       <QuestionContentPreview
+        questionId={question.id}
         type={question.content.questionType}
         options={question.content.options || []}
       />
