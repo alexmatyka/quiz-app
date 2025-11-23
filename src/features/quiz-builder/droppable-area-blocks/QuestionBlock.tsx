@@ -34,6 +34,7 @@ export const QuestionBlockRenderer = memo(
         <div className="flex flex-col gap-3">
           <p>{block.content.text}</p>
           <QuestionContentPreview
+            questionId={block.id}
             type={block.content.questionType}
             options={block.content.options || []}
           />
