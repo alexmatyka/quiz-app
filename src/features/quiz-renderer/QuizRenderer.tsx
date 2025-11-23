@@ -16,7 +16,7 @@ export const QuizRenderer = () => {
   return (
     <div
       className="flex flex-col gap-10 pb-10"
-      style={{ height: `calc(100vh - ${QUIZ_HEADER_HEIGHT}px` }}
+      style={{ minHeight: `calc(100vh - ${QUIZ_HEADER_HEIGHT}px` }}
     >
       {header && <HeaderBlock block={header} />}
 

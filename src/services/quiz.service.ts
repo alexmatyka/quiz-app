@@ -135,13 +135,40 @@ export const seedInitialData = () => {
         },
         {
           id: crypto.randomUUID(),
+          type: BlockType.Button,
+          content: {
+            text: "Submit",
+          },
+        },
+        {
+          id: crypto.randomUUID(),
+          type: BlockType.Footer,
+          content: {
+            text: "Annual quiz of all scientists",
+          },
+        },
+        {
+          id: crypto.randomUUID(),
           type: BlockType.Question,
           content: {
             text: "Which planet is known as the Red Planet?",
-            questionType: QuestionType.Single,
+            questionType: QuestionType.Multi,
             options: [
               { id: "Earth", value: "Earth" },
               { id: "Mars", value: "Mars" },
+            ],
+          },
+        },
+        {
+          id: crypto.randomUUID(),
+          type: BlockType.Question,
+          content: {
+            text: "How many planets are there in the solar system?",
+            questionType: QuestionType.Single,
+            options: [
+              { id: "1", value: "9" },
+              { id: "2", value: "8" },
+              { id: "3", value: "7" },
             ],
           },
         },
