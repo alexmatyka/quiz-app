@@ -13,7 +13,7 @@ type QuestionPropertiesBlockProps = {
 };
 
 // NOTE: Current component is small, so we don't optimize renders.
-// If it grows, consider moving data to zustand ( quizQuestionConfig field ) and split components
+// If it grows, consider moving data to zustand ( quizQuestionConfig field ) and split components or just add memoization
 export const QuestionPropertiesBlock = ({
   block,
 }: QuestionPropertiesBlockProps) => {
