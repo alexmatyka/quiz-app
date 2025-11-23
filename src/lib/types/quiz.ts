@@ -34,6 +34,7 @@ export type QuestionBlock = BaseBlock & {
     text: string;
     questionType: QuestionType;
     options?: QuestionOption[];
+    isMandatory?: boolean;
   };
 };
 

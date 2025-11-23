@@ -1,5 +1,6 @@
 import { type ChangeEvent, useEffect, useState } from "react";
 import { AppSelect, type SelectOption } from "@/components/AppSelect";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useQuizEditorContext } from "@/features/quiz-builder/context/QuizBuilderContext";
 import { PropertiesBlockActions } from "@/features/quiz-builder/properties-section/PropertiesBlockActions";
@@ -12,7 +13,7 @@ type QuestionPropertiesBlockProps = {
 };
 
 // NOTE: Current component is small, so we don't optimize renders.
-// If it grows, consider moving state down or memoizing subcomponents to avoid unnecessary re-renders.
+// If it grows, consider moving data to zustand ( quizQuestionConfig field ) and split components
 export const QuestionPropertiesBlock = ({
   block,
 }: QuestionPropertiesBlockProps) => {
@@ -26,11 +27,19 @@ export const QuestionPropertiesBlock = ({
     block.content.options || [],
   );
 
+  const [isMandatory, setMandatory] = useState(!!block.content.isMandatory);
+
   useEffect(() => {
     updateQuestionText(block.content.text);
     updateQuestionOptionsType(block.content.questionType);
     updateQuestionOptions(block.content.options || []);
-  }, [block.content.text, block.content.questionType, block.content.options]);
+    setMandatory(!!block.content.isMandatory);
+  }, [
+    block.content.text,
+    block.content.questionType,
+    block.content.options,
+    block.content.isMandatory,
+  ]);
 
   const { onRemoveBlock, onUpdateBlock } = useQuizEditorContext();
 
@@ -41,7 +50,9 @@ export const QuestionPropertiesBlock = ({
   const isApplyDisabled =
     block.content.text === questionText &&
     block.content.questionType === questionOptionsType &&
-    JSON.stringify(block.content.options) === JSON.stringify(questionOptions);
+    JSON.stringify(block.content.options || []) ===
+      JSON.stringify(questionOptions) &&
+    !!block.content.isMandatory === isMandatory;
 
   const onUpdateBlockAction = () => {
     onUpdateBlock({
@@ -50,6 +61,7 @@ export const QuestionPropertiesBlock = ({
         text: questionText,
         questionType: questionOptionsType,
         options: questionOptions,
+        isMandatory,
       },
     });
   };
@@ -59,6 +71,8 @@ export const QuestionPropertiesBlock = ({
   const onChangeQuestionOptionsType = (option: SelectOption<QuestionType>) => {
     updateQuestionOptionsType(option.value);
   };
+
+  const onChangeQuestionMandatory = () => setMandatory((prev) => !prev);
 
   const isQuestionWithOptions =
     questionOptionsType === QuestionType.Single ||
@@ -87,6 +101,26 @@ export const QuestionPropertiesBlock = ({
           value={questionOptionsType}
           onChangeAction={onChangeQuestionOptionsType}
         />
+      </div>
+
+      <div className="flex gap-2 items-center">
+        <Checkbox
+          id="mandatory-checkbox"
+          checked={isMandatory}
+          onCheckedChange={onChangeQuestionMandatory}
+          className="
+                h-5 w-5
+                border-2 border-gray-500
+                data-[state=checked]:bg-blue-600
+                data-[state=checked]:border-blue-600
+              "
+        />
+        <label
+          htmlFor="mandatory-checkbox"
+          className="cursor-pointer text-gray-800"
+        >
+          Is mandatory?
+        </label>
       </div>
 
       {isQuestionWithOptions && (
