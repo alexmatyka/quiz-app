@@ -7,8 +7,10 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
   return {
-    title: `View Quiz ${params.id}`,
+    title: `View Quiz ${id}`,
   };
 }
 
