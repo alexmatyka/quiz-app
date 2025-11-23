@@ -6,6 +6,7 @@ import { useQuizEditorContext } from "@/features/quiz-builder/context/QuizBuilde
 import { PropertiesBlockActions } from "@/features/quiz-builder/properties-section/PropertiesBlockActions";
 import { QuestionOptions } from "@/features/quiz-builder/properties-section/question-properties/QuestionOptions";
 import { QUESTION_OPTIONS } from "@/features/quiz-builder/utils/configs";
+import { isQuestionModified } from "@/features/quiz-builder/utils/quizBuilder";
 import { type QuestionBlock, QuestionType } from "@/lib/types/quiz";
 
 type QuestionPropertiesBlockProps = {
@@ -47,12 +48,12 @@ export const QuestionPropertiesBlock = ({
     updateQuestionText(e.target.value);
   };
 
-  const isApplyDisabled =
-    block.content.text === questionText &&
-    block.content.questionType === questionOptionsType &&
-    JSON.stringify(block.content.options || []) ===
-      JSON.stringify(questionOptions) &&
-    !!block.content.isMandatory === isMandatory;
+  const isApplyDisabled = !isQuestionModified(block, {
+    text: questionText,
+    questionType: questionOptionsType,
+    options: questionOptions,
+    isMandatory,
+  });
 
   const onUpdateBlockAction = () => {
     onUpdateBlock({

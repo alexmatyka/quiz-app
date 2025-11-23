@@ -1,5 +1,11 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import { BlockType, QuestionType, type QuizBlock } from "@/lib/types/quiz";
+import {
+  BlockType,
+  type QuestionBlock,
+  type QuestionOption,
+  QuestionType,
+  type QuizBlock,
+} from "@/lib/types/quiz";
 
 export const createBlock = (type: BlockType): QuizBlock => {
   const id = crypto.randomUUID();
@@ -45,4 +51,24 @@ export function isBlockType(
   value: UniqueIdentifier | undefined,
 ): value is BlockType {
   return Object.values(BlockType).includes(value as BlockType);
+}
+
+export function isQuestionModified(
+  originalBlock: QuestionBlock,
+  current: {
+    text: string;
+    questionType: QuestionType;
+    options: QuestionOption[];
+    isMandatory: boolean;
+  },
+) {
+  const sameText = originalBlock.content.text === current.text;
+  const sameType = originalBlock.content.questionType === current.questionType;
+  const sameMandatory =
+    !!originalBlock.content.isMandatory === current.isMandatory;
+  const sameOptions =
+    JSON.stringify(originalBlock.content.options || []) ===
+    JSON.stringify(current.options || []);
+
+  return !(sameText && sameType && sameMandatory && sameOptions);
 }
