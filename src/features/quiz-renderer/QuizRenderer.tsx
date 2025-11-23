@@ -20,7 +20,7 @@ export const QuizRenderer = () => {
     >
       {header && <HeaderBlock block={header} />}
 
-      <div className="">
+      <div className="flex-1">
         {questions.length ? (
           <QuestionsBlockComponent questionsBlocks={questions} />
         ) : (
