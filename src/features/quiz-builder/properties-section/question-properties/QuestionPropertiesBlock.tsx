@@ -14,7 +14,10 @@ type QuestionPropertiesBlockProps = {
 };
 
 // NOTE: Current component is small, so we don't optimize renders.
-// If it grows, consider moving data to zustand ( quizQuestionConfig field ) and split components or just add memoization
+// React compiler already handles this component really well and memoizes it.
+// Check next.config.js (reactCompiler: true).
+// As a result, option re-renders don’t occur when the title changes.
+// When the component grows, we can consider the option to split it into separate components and create Zustand fields to manage them.
 export const QuestionPropertiesBlock = ({
   block,
 }: QuestionPropertiesBlockProps) => {
