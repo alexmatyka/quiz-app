@@ -9,7 +9,7 @@ export const QuestionsBlockComponent = ({
   questionsBlocks,
 }: QuestionsBlockComponentProps) => {
   return (
-    <div className="py-4 px-1 flex flex-col gap-12">
+    <ul className="py-4 px-1 flex flex-col gap-12" aria-label="Quiz Questions">
       {questionsBlocks.map((question, questionIndex) => {
         return (
           <QuestionBlockItem
@@ -19,6 +19,6 @@ export const QuestionsBlockComponent = ({
           />
         );
       })}
-    </div>
+    </ul>
   );
 };

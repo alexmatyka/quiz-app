@@ -11,14 +11,14 @@ export const QuestionBlockItem = ({
   questionNumber,
 }: QuestionBlockItemProps) => {
   return (
-    <div>
-      <p className="font-bold mb-4">
+    <li>
+      <h2 className="font-bold mb-4">
         {questionNumber}. {question.content.text}
-      </p>
+      </h2>
       <QuestionContentPreview
         type={question.content.questionType}
         options={question.content.options || []}
       />
-    </div>
+    </li>
   );
 };
