@@ -29,7 +29,7 @@ export const useQuizStore = create<QuizStore>()(
       set({
         originalQuiz: null,
         draftQuiz: null,
-        isLoading: false,
+        isLoading: true,
         refetchTrigger: 0,
       });
     },

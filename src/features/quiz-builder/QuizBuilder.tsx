@@ -7,6 +7,7 @@ import { QuizBuilderPropertiesBar } from "@/features/quiz-builder/properties-sec
 import { QuizBuilderCanvas } from "@/features/quiz-builder/QuizBuilderCanvas";
 import { QuizBuilderDndProvider } from "@/features/quiz-builder/wrappers/QuizBuilderDndProvider";
 
+// We can detect this value with mutation observer + ref in more complex cases when we have dynamic header height
 const QUIZ_HEADER_HEIGHT = 320;
 
 export const QuizBuilder = () => {

@@ -55,6 +55,8 @@ export const saveQuiz = (quizData: Partial<Quiz>): Quiz | null => {
 
     const updatedQuiz: Quiz = { ...existingQuiz, ...quizData, updatedAt: now };
     setToStorage(getQuizKey(updatedQuiz.id), updatedQuiz);
+
+    toast.success("Quiz updated");
     return updatedQuiz;
   } else {
     // Create new quiz
@@ -72,7 +74,7 @@ export const saveQuiz = (quizData: Partial<Quiz>): Quiz | null => {
     const quizIds = getFromStorage(INDEX_KEY, []);
     setToStorage(INDEX_KEY, [...quizIds, newQuiz.id]);
 
-    toast.success("Quiz updated");
+    toast.success("Quiz created");
     return newQuiz;
   }
 };

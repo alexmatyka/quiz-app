@@ -12,7 +12,7 @@ import { ButtonBlockRenderer } from "@/features/quiz-builder/droppable-area-bloc
 import { FooterBlockRenderer } from "@/features/quiz-builder/droppable-area-blocks/FooterBlock";
 import { HeaderBlockRenderer } from "@/features/quiz-builder/droppable-area-blocks/HeaderBlock";
 import { QuestionBlockRenderer } from "@/features/quiz-builder/droppable-area-blocks/QuestionBlock";
-import { BlockType } from "@/lib/types/quiz";
+import { getQuizBlocks } from "@/lib/utils/generalQuizUtils";
 import { useQuizStore } from "@/stores/quiz.store";
 
 export const QuizBuilderCanvas = () => {
@@ -21,12 +21,7 @@ export const QuizBuilderCanvas = () => {
   const quizBlocks = useQuizStore((s) => s.draftQuiz?.blocks) || [];
   const questionsContainerRef = useRef<HTMLDivElement>(null);
 
-  const header = quizBlocks.find((block) => block.type === BlockType.Heading);
-  const footer = quizBlocks.find((block) => block.type === BlockType.Footer);
-  const button = quizBlocks.find((block) => block.type === BlockType.Button);
-  const questions = quizBlocks.filter(
-    (block) => block.type === BlockType.Question,
-  );
+  const { header, footer, button, questions } = getQuizBlocks(quizBlocks);
 
   return (
     <div className="flex flex-col w-full h-full px-6 py-4 overflow-y-auto">

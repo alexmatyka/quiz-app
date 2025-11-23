@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { QuizStatusWrapper } from "@/app/quiz/[id]/_components/QuizStatusWrapper";
+import { QuizRenderer } from "@/features/quiz-renderer/QuizRenderer";
 import { useQuizStore } from "@/stores/quiz.store";
 
 type ViewQuizPageContentProps = {
@@ -21,7 +22,10 @@ export const ViewQuizPageContent = ({ quizId }: ViewQuizPageContentProps) => {
 
   return (
     <QuizStatusWrapper quiz={originalQuiz} isLoading={isLoading}>
-      CONTEXT
+      <div className="flex justify-center mb-10">
+        <h2 className="font-bold text-2xl">{originalQuiz?.title}</h2>
+      </div>
+      <QuizRenderer />
     </QuizStatusWrapper>
   );
 };

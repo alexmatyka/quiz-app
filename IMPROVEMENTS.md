@@ -7,6 +7,7 @@
 - use more advanced structure for quiz builder ( separate store property for each block entity instead of common array )
 - Add support for choosing correct answer for quiz's that need this feature
 - Send quiz summary to email
+- Add more options for quiz builder property section ( button redirect/action settings, button variant, footer text size/color etc )
 
 ## Performance
 - Virtualization for long quiz lists to improve performance.
