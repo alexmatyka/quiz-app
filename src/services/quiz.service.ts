@@ -160,7 +160,7 @@ export const seedInitialData = () => {
     },
     {
       id: crypto.randomUUID(),
-      title: "Frontend Technologies",
+      title: "Frontend Technologies ( MANDATORY )",
       blocks: [
         {
           id: crypto.randomUUID(),
@@ -201,6 +201,35 @@ export const seedInitialData = () => {
               { id: "122323dsd", value: "No JSX in React!" },
               { id: "122323ddsd", value: "I am Jquery developer!" },
             ],
+          },
+        },
+        {
+          id: crypto.randomUUID(),
+          type: BlockType.Question,
+          content: {
+            text: "Select react frameworks",
+            questionType: QuestionType.Multi,
+            options: [
+              { id: "nextjs", value: "NextJS" },
+              { id: "remix", value: "Remix" },
+              { id: "Gatsby", value: "Gatsby" },
+              { id: "tanstack", value: "TanStack Start" },
+              { id: "expo", value: "Expo" },
+            ],
+          },
+        },
+        {
+          id: crypto.randomUUID(),
+          type: BlockType.Button,
+          content: {
+            text: "Submit",
+          },
+        },
+        {
+          id: crypto.randomUUID(),
+          type: BlockType.Footer,
+          content: {
+            text: "Annual quiz of all developers",
           },
         },
       ],

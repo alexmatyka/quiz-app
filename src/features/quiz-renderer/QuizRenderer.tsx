@@ -15,12 +15,12 @@ export const QuizRenderer = () => {
 
   return (
     <div
-      className="flex flex-col gap-10"
+      className="flex flex-col gap-10 pb-10"
       style={{ height: `calc(100vh - ${QUIZ_HEADER_HEIGHT}px` }}
     >
       {header && <HeaderBlock block={header} />}
 
-      <div className="flex-1">
+      <div className="">
         {questions.length ? (
           <QuestionsBlockComponent questionsBlocks={questions} />
         ) : (
